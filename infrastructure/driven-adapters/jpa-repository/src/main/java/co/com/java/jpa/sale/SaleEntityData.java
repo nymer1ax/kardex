@@ -16,6 +16,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@Table(name = "Sale")
 public class SaleEntityData {
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

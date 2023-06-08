@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "Inventory")
 public class InventoryEntityData {
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

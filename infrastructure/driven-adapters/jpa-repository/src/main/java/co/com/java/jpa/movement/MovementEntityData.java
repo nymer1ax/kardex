@@ -5,6 +5,7 @@ import co.com.java.model.movementtype.MovementType;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "Movement")
 public class MovementEntityData {
     @Id
     private Integer id;

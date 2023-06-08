@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "Employee")
 public class EmployeeEntityData {
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
