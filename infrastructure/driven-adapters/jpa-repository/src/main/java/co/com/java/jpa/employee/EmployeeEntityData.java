@@ -1,6 +1,6 @@
 package co.com.java.jpa.employee;
 
-import co.com.java.jpa.rol.RolEnum;
+import co.com.java.model.rol.Rol;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +20,5 @@ public class EmployeeEntityData {
     private String name;
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private List<RolEnum> roles;
+    private List<Rol> roles;
 }
