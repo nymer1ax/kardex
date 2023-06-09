@@ -33,9 +33,9 @@ public class ApiRest {
     private final AddProductUseCase addProductUseCase;
 
     @PostMapping(path = "/products")
-    public ResponseEntity<Void> addProduct(@RequestBody AddProductRequest addProductRequest) {
+    public ResponseEntity addProduct(@RequestBody AddProductRequest addProductRequest) {
         addProductUseCase.addProduct(addProductRequest.getProduct(), addProductRequest.getQuantity());
-        return (ResponseEntity<Void>) ResponseEntity.status(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/movements")

@@ -20,21 +20,52 @@ public class ProductRepositoryAdapter extends AdapterOperations<Product, Product
     public List<Product> getAll() {
         return repository.findAll()
                 .stream()
-                .map(o -> toEntity(o)).collect(Collectors.toList());
+                .map(o -> Product
+                        .builder()
+                        .id(o.getId())
+                        .description(o.getDescription())
+                        .price(o.getPrice())
+                        .build()).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Product> getById(Integer id) {
         Optional<ProductEntityData> o = repository.findById(id);
         if (o.isPresent()) {
-            return Optional.of(toEntity(o.get()));
+            return Optional.of(Product
+                    .builder()
+                    .id(o.get().getId())
+                    .description(o.get().getDescription())
+                    .price(o.get().getPrice())
+                    .build());
         }
         return Optional.empty();
     }
 
     @Override
-    public void saveProduct(Product product) {
-        ProductEntityData o = toData(product);
+    public Product saveProduct(Product product) {
+        ProductEntityData o = ProductEntityData
+                .builder()
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .name(product.getName())
+                .build();
         repository.save(o);
+        return product;
+    }
+
+    @Override
+    public Optional<Product> findByProductId(Integer id) {
+        Optional<ProductEntityData> product = repository.findById(id);
+        if(product.isPresent()){
+            return Optional.of(Product.builder()
+                    .name(product.get().getName())
+                    .description(product.get().getDescription())
+                    .price(product.get().getPrice())
+                    .id(product.get().getId())
+                    .build());
+        }
+        return Optional.empty();
+
     }
 }

@@ -9,6 +9,7 @@ import co.com.java.model.product.Product;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +21,32 @@ public class InventoryRepositoryAdapter extends AdapterOperations<Inventory, Inv
     }
 
     @Override
-    public Optional<Inventory> findByProduct(Product product) {
-        Optional<InventoryEntityData> a = repository.findByProduct(product);
-        if(a.isEmpty()){
-            return Optional.empty();
+    public List<Inventory> findByProduct(Product product) {
+        ProductEntityData productEntityData = ProductEntityData
+                .builder()
+                .id(product.getId())
+                .price(product.getPrice())
+                .name(product.getName())
+                .description(product.getDescription())
+                .build();
+        List<InventoryEntityData> a = repository.findAllByProduct(productEntityData);
+
+        if (a.isEmpty()) {
+            return Collections.emptyList();
         }
-        return Optional.of(toEntity(a.get()));
+
+        return a.stream().map(i ->
+                Inventory.builder()
+                        .product(Product
+                                .builder()
+                                .id(i.getProduct().getId())
+                                .name(i.getProduct().getName())
+                                .description(i.getProduct().getDescription())
+                                .build()
+                        )
+                        .quantity(i.getQuantity())
+                        .id(i.getId())
+                        .build()).collect(Collectors.toList());
     }
 
     @Override

@@ -8,8 +8,8 @@ import jakarta.persistence.*;
 @Table(name = "Movement")
 public class MovementEntityData {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @ManyToOne
     private ProductEntityData product;
 

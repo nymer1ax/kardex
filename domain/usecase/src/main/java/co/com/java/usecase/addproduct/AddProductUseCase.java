@@ -9,6 +9,7 @@ import co.com.java.model.product.Product;
 import co.com.java.model.product.gateways.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -19,27 +20,40 @@ public class AddProductUseCase {
 
     public void addProduct(Product product, Integer quantity) {
 
-        Optional<Inventory> inventory = inventoryRepository.findByProduct(product);
+        Product p = validateProductExistence(product);
 
-        if (inventory.isEmpty()) {
-            Inventory i = inventory.get();
-            i.setQuantity(i.getQuantity() + quantity);
+        List<Inventory> inventory = inventoryRepository.findByProduct(p);
+
+        if (!inventory.isEmpty()) {
+            for (Inventory i : inventory) {
+                i.setQuantity(i.getQuantity() + quantity);
+                inventoryRepository.saveInventory(i);
+            }
         }
         Inventory newInventory = Inventory.builder()
-                .product(product)
+                .product(p)
                 .quantity(quantity)
                 .build();
+
         inventoryRepository.saveInventory(newInventory);
 
         Movement movement = Movement
                 .builder()
-                .product(product)
+                .product(p)
                 .quantity(quantity)
                 .type(MovementType.IN)
                 .build();
 
         movementsRepository.saveMovement(movement);
 
+    }
+
+    private Product validateProductExistence(Product product) {
+        Optional<Product> p = productRepository.findByProductId(product.getId());
+        if (p.isPresent()) {
+            return p.get();
+        }
+        return productRepository.saveProduct(product);
     }
 
 }
