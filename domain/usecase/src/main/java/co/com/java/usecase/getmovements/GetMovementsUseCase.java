@@ -9,7 +9,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetMovementsUseCase {
     private final MovementsRepository movementsRepository;
-    List<Movement> getAllMovements(){
+    public List<Movement> getAllMovements(){
         return movementsRepository.getAllMovements();
     }
 }

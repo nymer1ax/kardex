@@ -10,7 +10,7 @@ import java.util.List;
 public class GetInventoryUseCase {
     private final InventoryRepository inventoryRepository;
 
-    List<Inventory> getAllInventory(){
+    public List<Inventory> getAllInventory(){
         return inventoryRepository.getAllInventory();
     }
 }
