@@ -7,7 +7,7 @@ import co.com.java.model.employee.Employee;
 import co.com.java.model.product.Product;
 import org.reactivecommons.utils.ObjectMapper;
 
-public class EmployeeRepositoryAdapter extends AdapterOperations<Employee, EmployeeEntityData, Integer, EmployeeEntityDataRepository> {
+public class EmployeeRepositoryAdapter extends AdapterOperations<Employee, EmployeeEntityData, Integer, EmployeeEntityDataRepository>  {
 
     public EmployeeRepositoryAdapter(EmployeeEntityDataRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, Employee.class/* change for domain model */));
