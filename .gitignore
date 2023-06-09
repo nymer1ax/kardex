@@ -35,3 +35,10 @@ target/
 /.gradle/
 
 *.properties
+applications/app-service/src/main/resources/db
+*.db
+*.class
+*.class
+*.class
+*.class
+*.class

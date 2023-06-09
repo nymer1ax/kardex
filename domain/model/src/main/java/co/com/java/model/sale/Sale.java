@@ -1,6 +1,5 @@
 package co.com.java.model.sale;
 import co.com.java.model.product.Product;
-import co.com.java.model.rol.Rol;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
