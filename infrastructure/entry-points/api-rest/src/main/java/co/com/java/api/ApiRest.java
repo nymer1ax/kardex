@@ -11,6 +11,7 @@ import co.com.java.usecase.getinventory.GetInventoryUseCase;
 import co.com.java.usecase.getmovements.GetMovementsUseCase;
 import co.com.java.usecase.getsales.GetSalesUseCase;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-@AllArgsConstructor
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT})
+@RequiredArgsConstructor
 public class ApiRest {
 
     private final CreateSaleUseCase createSaleUseCase;

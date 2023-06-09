@@ -6,6 +6,6 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.stereotype.Repository;
 
 
-public interface SaleEntityDataRepository extends CrudRepository<SaleEntityData, Integer>, QueryByExampleExecutor<SaleEntityData> {
+public interface SaleEntityDataRepository extends CrudRepository<SaleEntityData, Integer>, QueryByExampleExecutor<SaleEntityData>  {
 
 }
