@@ -13,9 +13,9 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class AddProductUseCase {
-    private ProductRepository productRepository;
-    private InventoryRepository inventoryRepository;
-    private MovementsRepository movementsRepository;
+    private final ProductRepository productRepository;
+    private final InventoryRepository inventoryRepository;
+    private final MovementsRepository movementsRepository;
 
     public void addProduct(Product product, Integer quantity) {
 
