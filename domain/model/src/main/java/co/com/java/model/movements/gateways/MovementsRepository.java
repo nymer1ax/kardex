@@ -8,4 +8,6 @@ public interface MovementsRepository {
     void saveMovement(Movement movement);
 
     void saveAllMovements(List<Movement> movements);
+
+    List<Movement> getAllMovements();
 }
