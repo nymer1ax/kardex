@@ -1,0 +1,37 @@
+# Archivos generados por el IDE IntelliJ
+.idea/
+
+# Archivos generados por Gradle
+build/
+out/
+
+# Archivos generados por Maven
+target/
+
+# Archivos de configuración específicos de IntelliJ
+*.iml
+*.ipr
+*.iws
+
+# Archivos de configuración de Eclipse
+.settings/
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+
+# Archivos de respaldo de Emacs
+*~
+
+# Archivos de caché de JetBrains
+*.swp
+*.swp
+*.DS_Store
+.idea/
+
+# Carpetas de respaldo de Gradle
+/.gradle/
+
+*.properties
