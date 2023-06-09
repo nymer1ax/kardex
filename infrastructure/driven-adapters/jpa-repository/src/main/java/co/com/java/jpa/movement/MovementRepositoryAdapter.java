@@ -8,6 +8,7 @@ import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class MovementRepositoryAdapter extends AdapterOperations<Movement, MovementEntityData, Integer, MovementEntityDataRepository> implements MovementsRepository {
@@ -18,16 +19,18 @@ public class MovementRepositoryAdapter extends AdapterOperations<Movement, Movem
 
     @Override
     public void saveMovement(Movement movement) {
-
+        MovementEntityData m = toData(movement);
+        repository.save(m);
     }
 
     @Override
     public void saveAllMovements(List<Movement> movements) {
-
+        List<MovementEntityData> e = movements.stream().map(this::toData).collect(Collectors.toList());
+        e.forEach(o -> repository.save(o));
     }
 
     @Override
     public List<Movement> getAllMovements() {
-        return null;
+        return repository.findAll().stream().map(this::toEntity).collect(Collectors.toList());
     }
 }

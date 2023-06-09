@@ -8,6 +8,7 @@ import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class SaleRepositoryAdapter extends AdapterOperations<Sale, SaleEntityData, Integer, SaleEntityDataRepository> implements SaleRepository {
@@ -17,12 +18,13 @@ public class SaleRepositoryAdapter extends AdapterOperations<Sale, SaleEntityDat
 
     @Override
     public void saveSale(Sale sale) {
-
+        SaleEntityData s = toData(sale);
+        repository.save(s);
     }
 
     @Override
     public List<Sale> getAllSales() {
-        return null;
+        return repository.findAll().stream().map(o -> toEntity(o)).collect(Collectors.toList());
     }
 }
 
