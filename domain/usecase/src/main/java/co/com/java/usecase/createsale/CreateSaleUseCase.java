@@ -9,6 +9,7 @@ import co.com.java.model.product.Product;
 import co.com.java.model.product.gateways.ProductRepository;
 import co.com.java.model.sale.Sale;
 import co.com.java.model.sale.gateways.SaleRepository;
+import co.com.java.usecase.exceptions.InsufficientStockException;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -57,7 +58,7 @@ public class CreateSaleUseCase {
                     .orElse(null);
 
             if (existenceInventory == null || existenceInventory.getQuantity() < quantity) {
-                throw new RuntimeException("There is not enough stock for productId::" + product);
+                throw new InsufficientStockException("There is not enough stock for productId::" + product);
             }
 
             existenceInventory.setQuantity(existenceInventory.getQuantity() - quantity);

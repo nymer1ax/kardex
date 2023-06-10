@@ -1,6 +1,7 @@
 package co.com.java.api.handlingexception;
 
 import co.com.java.api.request.ResponseRequest;
+import co.com.java.usecase.exceptions.InsufficientStockException;
 import io.micrometer.core.ipc.http.HttpSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,18 @@ public class GlobalHandler extends ResponseEntityExceptionHandler {
                 .result(Collections.emptyList())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(value = {InsufficientStockException.class})
+    public ResponseEntity<ResponseRequest> custom(InsufficientStockException ex) {
+
+        ResponseRequest response = ResponseRequest.builder()
+                .responseDescription(ex.getMessage())
+                .resultCode("UNPROCESSABLE_ENTITY")
+                .date(LocalDateTime.now().toString())
+                .result(Collections.emptyList())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
     }
 
 }
