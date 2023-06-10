@@ -32,7 +32,6 @@ public class GlobalHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {InsufficientStockException.class})
     public ResponseEntity<ResponseRequest> custom(InsufficientStockException ex) {
-
         ResponseRequest response = ResponseRequest.builder()
                 .responseDescription(ex.getMessage())
                 .resultCode("UNPROCESSABLE_ENTITY")
