@@ -8,5 +8,7 @@ import java.util.List;
 public interface ProductEntityDataRepository extends CrudRepository<ProductEntityData, Integer>, QueryByExampleExecutor<ProductEntityData> {
 
     List<ProductEntityData> findAll();
+    List<ProductEntityData> findAllByIdIn(List<Integer> ids);
+
 
 }

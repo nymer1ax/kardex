@@ -3,6 +3,7 @@ package co.com.java.jpa.sale;
 import co.com.java.jpa.product.ProductEntityData;
 ;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class SaleEntityData {
     private List<ProductEntityData> products;
     @ElementCollection
     private List<Integer> quantities;
+
+    private BigDecimal totalSold;
+
 
 
 }

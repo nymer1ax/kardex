@@ -11,7 +11,11 @@ import co.com.java.model.sale.Sale;
 import co.com.java.model.sale.gateways.SaleRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -22,27 +26,61 @@ public class CreateSaleUseCase {
     private final MovementsRepository movementsRepository;
     private final SaleRepository saleRepository;
 
-    public void createSale(Sale sale){
-        List<Product> products = sale.getProducts();
-        List<Integer> quantities = sale.getQuantities();
+    public void createSale(List<Integer> quantitiesList, LocalDate date, List<Integer> productsList) {
+        List<Integer> products = productsList;
+        List<Integer> quantities = quantitiesList;
         List<Inventory> inventories = inventoryRepository.getAllInventory();
+        BigDecimal totalSold = BigDecimal.ZERO;
+        List<Movement> movements = new ArrayList<>();
 
-        List<Movement> movements = IntStream.range(0, products.size()).mapToObj(i ->
-        {
-           Product product = products.get(i);
-           Integer quantity = quantities.get(i);
-           Inventory existenceInventory = inventories.stream().filter(o -> o.getProduct().equals(product)).findFirst().orElse(null);
+        for (int i = 0; i < products.size(); i++) {
+            Integer product = products.get(i);
+            Integer quantity = quantities.get(i);
+            Product p = getProduct(product);
+            Inventory existenceInventory = inventories.stream()
+                    .filter(o -> o.getProduct().getId().equals(product))
+                    .findFirst()
+                    .orElse(null);
 
-           if(existenceInventory == null || existenceInventory.getQuantity() < quantity ){
-               throw new RuntimeException("There is no enough stock"+product.getName());
-           }
-           existenceInventory.setQuantity(existenceInventory.getQuantity() - quantity);
-           inventoryRepository.saveInventory(existenceInventory);
+            if (existenceInventory == null || existenceInventory.getQuantity() < quantity) {
+                throw new RuntimeException("There is not enough stock for productId::" + product);
+            }
 
-           return Movement.builder().quantity(quantity).product(product).type(MovementType.OUT).build();
-        }).collect(Collectors.toList());
+            existenceInventory.setQuantity(existenceInventory.getQuantity() - quantity);
+            inventoryRepository.saveInventory(existenceInventory);
+
+            BigDecimal subtotal = new BigDecimal(p.getPrice()).multiply(BigDecimal.valueOf(quantity));
+            totalSold = totalSold.add(subtotal);
+
+            Movement movement = Movement.builder()
+                    .quantity(quantity)
+                    .product(p)
+                    .type(MovementType.OUT)
+                    .subtotal(subtotal)
+                    .build();
+            movements.add(movement);
+        }
 
         movementsRepository.saveAllMovements(movements);
+
+        List<Product> pList = productRepository.findAllById(products);
+
+        Sale sale = Sale.builder()
+                .quantities(quantities)
+                .products(pList)
+                .date(date)
+                .totalSold(totalSold)
+                .build();
         saleRepository.saveSale(sale);
     }
+
+
+    private Product getProduct(Integer product) {
+        Optional<Product> p = productRepository.findByProductId(product);
+        if(p.isEmpty()){
+            throw new RuntimeException("Product do not exist");
+        }
+        return p.get();
+    }
+
 }

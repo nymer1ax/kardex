@@ -11,4 +11,6 @@ public interface ProductRepository {
     Product saveProduct(Product product);
 
     Optional<Product> findByProductId(Integer id);
+
+    List<Product> findAllById(List<Integer> products);
 }

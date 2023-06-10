@@ -1,5 +1,6 @@
 package co.com.java.api;
 import co.com.java.api.request.AddProductRequest;
+import co.com.java.api.request.CreateSaleRequest;
 import co.com.java.model.inventory.Inventory;
 import co.com.java.model.movements.Movement;
 import co.com.java.model.product.Product;
@@ -10,7 +11,6 @@ import co.com.java.usecase.getavailableproducts.GetAvailableProductsUseCase;
 import co.com.java.usecase.getinventory.GetInventoryUseCase;
 import co.com.java.usecase.getmovements.GetMovementsUseCase;
 import co.com.java.usecase.getsales.GetSalesUseCase;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,15 +53,15 @@ public class ApiRest {
         return ResponseEntity.status(HttpStatus.OK).body(getInventoryUseCase.getAllInventory());
     }
 
-    @GetMapping("/products/avaliable")
+    @GetMapping("/products/available")
     public ResponseEntity<List<Product>> getAvailableProducts(){
         return ResponseEntity.status(HttpStatus.OK).body(getAvailableProductsUseCase.getAvailableProducts());
     }
 
     @PostMapping("/sale")
-    public ResponseEntity<Void> createSale(@RequestBody Sale sale){
-        createSaleUseCase.createSale(sale);
-       return (ResponseEntity<Void>) ResponseEntity.status(HttpStatus.CREATED);
+    public ResponseEntity createSale(@RequestBody CreateSaleRequest sale){
+        createSaleUseCase.createSale(sale.getQuantities(), sale.getDate(), sale.getProducts());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 

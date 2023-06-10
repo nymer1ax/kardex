@@ -68,4 +68,13 @@ public class ProductRepositoryAdapter extends AdapterOperations<Product, Product
         return Optional.empty();
 
     }
+
+    @Override
+    public List<Product> findAllById(List<Integer> products) {
+        return repository.findAllByIdIn(products).stream().map(o -> Product.builder()
+                .name(o.getName())
+                .description(o.getDescription())
+                .price(o.getPrice())
+                .id(o.getId()).build()).collect(Collectors.toList());
+    }
 }
