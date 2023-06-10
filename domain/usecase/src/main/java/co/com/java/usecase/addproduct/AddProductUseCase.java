@@ -53,14 +53,19 @@ public class AddProductUseCase {
             if (!existingProduct.isEmpty()) {
                 return existingProduct.get(0);
             }
-            return productRepository.saveProduct(product);
+            return getProduct(product);
         }
         Optional<Product> p = productRepository.findByProductId(product.getId());
         if (p.isPresent()) {
             return p.get();
         }
 
-        return productRepository.saveProduct(product);
+        return getProduct(product);
+    }
+
+    private Product getProduct(Product product) {
+        Product p = productRepository.saveProduct(product);
+        return p;
     }
 
 
