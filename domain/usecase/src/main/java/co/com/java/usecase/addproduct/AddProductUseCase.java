@@ -85,7 +85,9 @@ public class AddProductUseCase {
             }
 
             // Actualizar el inventario consolidado
-            inventoryRepository.saveInventory(firstInventory);
+            if (firstInventory.getQuantity() != inventoryList.get(0).getQuantity()) {
+                inventoryRepository.saveInventory(firstInventory);
+            }
 
 
             return firstInventory; // Devolver el inventario consolidado
