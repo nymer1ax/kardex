@@ -6,6 +6,7 @@ import co.com.java.model.product.gateways.ProductRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class ProductRepositoryAdapter extends AdapterOperations<Product, Product
     @Override
     public Optional<Product> findByProductId(Integer id) {
         Optional<ProductEntityData> product = repository.findById(id);
-        if(product.isPresent()){
+        if (product.isPresent()) {
             return Optional.of(Product.builder()
                     .name(product.get().getName())
                     .description(product.get().getDescription())
@@ -76,5 +77,21 @@ public class ProductRepositoryAdapter extends AdapterOperations<Product, Product
                 .description(o.getDescription())
                 .price(o.getPrice())
                 .id(o.getId()).build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> findAllByName(String name) {
+        List<ProductEntityData> x = repository.findAllByName(name);
+        if (!x.isEmpty()) {
+            return x.stream().map(o -> Product
+                            .builder()
+                            .name(o.getName())
+                            .description(o.getDescription())
+                            .price(o.getPrice())
+                            .id(o.getId())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 }

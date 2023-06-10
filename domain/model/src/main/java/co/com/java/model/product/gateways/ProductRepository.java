@@ -13,4 +13,6 @@ public interface ProductRepository {
     Optional<Product> findByProductId(Integer id);
 
     List<Product> findAllById(List<Integer> products);
+
+    List<Product> findAllByName(String name);
 }

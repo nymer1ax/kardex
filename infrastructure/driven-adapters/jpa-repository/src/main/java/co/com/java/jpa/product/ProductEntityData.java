@@ -14,7 +14,7 @@ public class ProductEntityData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
     private String description;
     @Column(name = "price", nullable = false)

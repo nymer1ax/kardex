@@ -27,6 +27,7 @@ public class AddProductUseCase {
         if (inventory != null) {
             inventory.setQuantity(inventory.getQuantity() + quantity);
             inventoryRepository.saveInventory(inventory);
+
         } else {
             Inventory newInventory = Inventory.builder()
                     .product(p)
@@ -47,12 +48,21 @@ public class AddProductUseCase {
     }
 
     private Product validateProductExistence(Product product) {
+        if (product.getId() == null) {
+            List<Product> existingProduct = productRepository.findAllByName(product.getName());
+            if (!existingProduct.isEmpty()) {
+                return existingProduct.get(0);
+            }
+            return productRepository.saveProduct(product);
+        }
         Optional<Product> p = productRepository.findByProductId(product.getId());
         if (p.isPresent()) {
             return p.get();
         }
+
         return productRepository.saveProduct(product);
     }
+
 
     public Inventory consolidateInventories(Product product) {
         List<Inventory> inventoryList = inventoryRepository.findByProduct(product);
