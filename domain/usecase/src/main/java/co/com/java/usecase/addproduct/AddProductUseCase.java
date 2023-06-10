@@ -22,20 +22,18 @@ public class AddProductUseCase {
 
         Product p = validateProductExistence(product);
 
-        List<Inventory> inventory = inventoryRepository.findByProduct(p);
+        Inventory inventory = consolidateInventories(p);
 
-        if (!inventory.isEmpty()) {
-            for (Inventory i : inventory) {
-                i.setQuantity(i.getQuantity() + quantity);
-                inventoryRepository.saveInventory(i);
-            }
+        if (inventory != null) {
+            inventory.setQuantity(inventory.getQuantity() + quantity);
+            inventoryRepository.saveInventory(inventory);
+        } else {
+            Inventory newInventory = Inventory.builder()
+                    .product(p)
+                    .quantity(quantity)
+                    .build();
+            inventoryRepository.saveInventory(newInventory);
         }
-        Inventory newInventory = Inventory.builder()
-                .product(p)
-                .quantity(quantity)
-                .build();
-
-        inventoryRepository.saveInventory(newInventory);
 
         Movement movement = Movement
                 .builder()
@@ -54,6 +52,31 @@ public class AddProductUseCase {
             return p.get();
         }
         return productRepository.saveProduct(product);
+    }
+
+    public Inventory consolidateInventories(Product product) {
+        List<Inventory> inventoryList = inventoryRepository.findByProduct(product);
+
+        if (!inventoryList.isEmpty()) {
+            Inventory firstInventory = inventoryList.get(0);
+
+            // Sumar la cantidad a partir del segundo inventario
+            for (int i = 1; i < inventoryList.size(); i++) {
+                Inventory currentInventory = inventoryList.get(i);
+                firstInventory.setQuantity(firstInventory.getQuantity() + currentInventory.getQuantity());
+
+                // Eliminar los inventarios adicionales
+                inventoryRepository.delete(currentInventory);
+            }
+
+            // Actualizar el inventario consolidado
+            inventoryRepository.saveInventory(firstInventory);
+
+
+            return firstInventory; // Devolver el inventario consolidado
+        }
+
+        return null; // Si no hay inventarios, devolver null
     }
 
 }

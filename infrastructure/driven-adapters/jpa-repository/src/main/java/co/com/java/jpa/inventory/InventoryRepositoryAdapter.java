@@ -59,4 +59,24 @@ public class InventoryRepositoryAdapter extends AdapterOperations<Inventory, Inv
     public List<Inventory> getAllInventory() {
         return repository.findAll().stream().map(o -> toEntity(o)).collect(Collectors.toList());
     }
+
+    @Override
+    public void delete(Inventory currentInventory) {
+
+        ProductEntityData product = ProductEntityData
+                .builder()
+                .id(currentInventory.getProduct().getId())
+                .price(currentInventory.getProduct().getPrice())
+                .description(currentInventory.getProduct().getDescription())
+                .build();
+
+        InventoryEntityData inventoryEntityData = InventoryEntityData
+                .builder()
+                .id(currentInventory.getId())
+                .product(product)
+                .quantity(currentInventory.getQuantity())
+                .build();
+
+        repository.delete(inventoryEntityData);
+    }
 }

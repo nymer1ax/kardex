@@ -11,4 +11,6 @@ public interface InventoryRepository {
     List<Inventory> findByProduct(Product product);
     void saveInventory(Inventory inventory);
     List<Inventory> getAllInventory();
+
+    void delete(Inventory currentInventory);
 }

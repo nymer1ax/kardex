@@ -3,15 +3,13 @@ package co.com.java.jpa.inventory;
 import co.com.java.jpa.product.ProductEntityData;
 import co.com.java.model.product.Product;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 @Setter
 @Table(name = "Inventory")
 public class InventoryEntityData {
