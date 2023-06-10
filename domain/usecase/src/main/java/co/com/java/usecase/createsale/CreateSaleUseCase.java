@@ -27,6 +27,20 @@ public class CreateSaleUseCase {
     private final SaleRepository saleRepository;
 
     public void createSale(List<Integer> quantitiesList, LocalDate date, List<Integer> productsList) {
+
+        if(quantitiesList.isEmpty() || quantitiesList == null){
+            throw new RuntimeException("Vales must not be null");
+        }
+
+        if(date == null){
+            throw new RuntimeException("Vales must not be null");
+        }
+
+        if(productsList.isEmpty() || productsList == null){
+            throw new RuntimeException("Vales must not be null");
+        }
+
+
         List<Integer> products = productsList;
         List<Integer> quantities = quantitiesList;
         List<Inventory> inventories = inventoryRepository.getAllInventory();
